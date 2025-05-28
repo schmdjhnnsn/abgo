@@ -4,46 +4,47 @@ body {
     flex-direction: column;
     align-items: center;
     background-color: #f0f0f0;
-    margin: 10px; /* Etwas weniger Margin auf kleinen Geräten */
-    padding: 10px; /* Padding für den Body, um Ränder zu vermeiden */
-    box-sizing: border-box; /* Sicherstellen, dass Padding in der Gesamtbreite enthalten ist */
+    margin: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    min-height: 100vh; /* Mindesthöhe des Bodys, damit der Footer (falls vorhanden) unten bleibt */
 }
 
 h1 {
     color: #333;
-    margin-bottom: 20px; /* Etwas weniger Abstand zur Überschrift */
-    text-align: center; /* Überschrift zentrieren */
-    font-size: 2em; /* Standard Schriftgröße für Desktop */
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 2em;
 }
 
-/* Zusätzliche Regeln für das Logo */
 .bingo-logo {
-    max-width: 300px; /* Maximale Breite des Logos */
-    height: auto;     /* Höhe automatisch anpassen, um Proportionen zu bewahren */
-    margin-bottom: 20px; /* Abstand unter dem Logo */
-    margin-top: -10px; /* Optional: Etwas höher setzen, falls es zu weit unten ist */
+    max-width: 300px;
+    height: auto;
+    margin-bottom: 20px;
+    margin-top: -10px;
 }
-
 
 #bingo-board {
     display: grid;
-    grid-template-columns: repeat(5, 120px); /* Standard: 5 Spalten, 120px breit */
-    grid-template-rows: repeat(5, 120px);    /* Standard: 5 Reihen, 120px hoch */
+    /* NEU: Flexibles Grid mit auto-fit */
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Kacheln mindestens 120px breit, füllen sonst den Rest aus */
     gap: 10px;
     border: 2px solid #ccc;
     padding: 10px;
     background-color: #fff;
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    /* NEU: Maximale Breite für das Board auf größeren Bildschirmen */
-    max-width: 650px; /* 5 * 120px + 4 * 10px (gaps) + 2 * 10px (padding) + 2 * 2px (border) = 600 + 40 + 20 + 4 = 664. Gerundeter Wert. */
-    width: 100%; /* Wichtig für Responsivität: Nimmt 100% der verfügbaren Breite ein (bis max-width) */
+    max-width: 900px; /* Eine angemessene maximale Breite für das gesamte Board */
+    width: 100%; /* Wichtig für Responsivität */
+    box-sizing: border-box; /* Padding in die Breite einbeziehen */
 }
 
 .bingo-tile {
-    /* ... (bestehende Regeln bleiben gleich) ... */
-    width: 100%; /* Kachel nimmt 100% der Spaltenbreite ein */
-    height: 100%; /* Kachel nimmt 100% der Reihenhöhe ein */
-    display: flex; /* Sicherstellen, dass der Inhalt zentriert bleibt */
+    /* Die Kacheln müssen keine feste Breite oder Höhe mehr haben, da grid-template-columns dies regelt */
+    /* Wir geben ihnen eine minimale Höhe, damit sie nicht zu flach werden, und ein Aspect Ratio */
+    min-height: 100px; /* Mindesthöhe für die Kachel */
+    aspect-ratio: 1 / 1; /* Hält die Kacheln quadratisch (Breite:Höhe) */
+    
+    display: flex;
     justify-content: center;
     align-items: center;
     background-color: #007bff;
@@ -55,56 +56,53 @@ h1 {
     text-align: center;
     box-sizing: border-box;
     transition: background-color 0.3s ease, transform 0.1s ease;
-    padding: 5px; /* Etwas weniger Padding für kleinere Kacheln */
+    padding: 5px;
     border: 2px solid #0056b3;
-    word-wrap: break-word; /* NEU: Lange Wörter umbrechen */
-    white-space: normal; /* NEU: Zeilenumbrüche ermöglichen */
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden; /* Sicherstellen, dass Text nicht über den Rand geht */
+}
+
+.bingo-tile:hover {
+    transform: scale(1.02);
 }
 
 .bingo-tile.revealed {
-    /* ... (bestehende Regeln bleiben gleich) ... */
     background-color: #28a745;
     color: white;
     cursor: default;
-    font-size: 0.8em; /* Noch kleinere Schrift für den längeren Spruch auf kleinen Geräten */
+    font-size: 0.9em; /* Angepasst, da die Kachelgröße variiert */
     font-weight: normal;
     border: 2px solid #1e7e34;
 }
 
 /* ------------------------------------------- */
-/* NEU: Media Queries für mobile Optimierung */
+/* Angepasste/vereinfachte Media Queries */
 /* ------------------------------------------- */
 
 /* Für Bildschirme, die kleiner als 768px sind (typisch für Tablets im Hochformat und Smartphones) */
 @media (max-width: 768px) {
     h1 {
-        font-size: 1.8em; /* Überschrift auf kleineren Bildschirmen etwas kleiner */
+        font-size: 1.8em;
     }
 
     .bingo-logo {
-        max-width: 250px; /* Logo auf kleineren Bildschirmen kleiner */
+        max-width: 250px;
     }
 
     #bingo-board {
-        /* Passt das Grid an, damit die Kacheln flexibler werden */
-        grid-template-columns: repeat(5, 1fr); /* 5 Spalten, die den verfügbaren Platz gleichmäßig teilen */
-        grid-template-rows: repeat(5, 1fr);    /* 5 Reihen, die den verfügbaren Platz gleichmäßig teilen */
         gap: 8px; /* Etwas kleinere Abstände */
         padding: 8px;
-        /* Die Kacheln werden jetzt ihre Größe basierend auf dem verfügbaren Platz anpassen.
-           Wir können eine minimale Höhe für die Kacheln festlegen, damit sie nicht zu klein werden. */
-        min-height: 300px; /* Beispiel: Mindesthöhe für das Board */
-        height: auto; /* Höhe flexibel anpassen */
     }
 
     .bingo-tile {
-        min-height: 50px; /* Mindesthöhe für die Kachel auf kleinen Geräten */
-        font-size: 0.9em; /* Schriftgröße für verdeckte Kacheln anpassen */
+        min-height: 80px; /* Etwas kleinere Mindesthöhe für Kacheln */
+        font-size: 0.9em;
         padding: 5px;
     }
 
     .bingo-tile.revealed {
-        font-size: 0.7em; /* Schriftgröße für aufgedeckte Kacheln noch kleiner */
+        font-size: 0.8em;
     }
 }
 
@@ -116,24 +114,24 @@ h1 {
     }
 
     .bingo-logo {
-        max-width: 200px;
+        max-width: 180px; /* Logo kann auf sehr kleinen Screens noch kleiner sein */
         margin-bottom: 15px;
     }
 
     #bingo-board {
         gap: 5px;
         padding: 5px;
-        min-height: 250px;
     }
 
     .bingo-tile {
-        min-height: 40px; /* Auch hier Mindesthöhe */
+        min-height: 60px; /* Auch hier Mindesthöhe anpassen */
         font-size: 0.8em;
         padding: 3px;
     }
 
     .bingo-tile.revealed {
-        font-size: 0.65em;
+        font-size: 0.7em;
     }
 }
+
 
