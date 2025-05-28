@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f0f0f0;
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Zusätzliche Regeln für das Logo */
+.bingo-logo {
+    max-width: 300px; /* Maximale Breite des Logos */
+    height: auto;     /* Höhe automatisch anpassen, um Proportionen zu bewahren */
+    margin-bottom: 20px; /* Abstand unter dem Logo */
+    margin-top: -10px; /* Optional: Etwas höher setzen, falls es zu weit unten ist */
+}
+
+
+#bingo-board {
+    display: grid;
+    grid-template-columns: repeat(5, 120px); /* 5 Spalten, jede 120px breit */
+    grid-template-rows: repeat(5, 120px);    /* 5 Reihen, jede 120px hoch */
+    gap: 10px;
+    border: 2px solid #ccc;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+.bingo-tile {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #007bff; /* Standardfarbe der Kachel (verdeckt) */
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    text-align: center;
+    box-sizing: border-box; /* Padding und Border werden in die Gesamtgröße eingerechnet */
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    padding: 10px; /* Innenabstand für den Text */
+    border: 2px solid #0056b3; /* Dunklerer Rand */
+}
+
+.bingo-tile:hover {
+    transform: scale(1.02);
+}
+
+.bingo-tile.revealed {
+    background-color: #28a745; /* Farbe der aufgedeckten Kachel */
+    color: white;
+    cursor: default; /* Mauszeiger ändert sich nicht mehr */
+    font-size: 0.9em; /* Kleinere Schrift für den längeren Spruch */
+    font-weight: normal;
+    border: 2px solid #1e7e34;
+}
